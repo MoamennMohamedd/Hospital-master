@@ -39,7 +39,7 @@ export default function LoginPage() {
     // Here you would typically handle the login logic
     console.log('Login submitted', { username, password, isAdmin, isUser })
     // For demo purposes, we'll just redirect to a dashboard
-    router.push('/condition')
+    router.push('/medical-interface')
   }
 
   return (
