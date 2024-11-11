@@ -20,7 +20,7 @@ export default function Component() {
             Smart <span className="text-blue-500">Ambulance</span>
           </div>
         <div className="w-8 h-8 bg-white flex items-center justify-center">
-          <Link href={"/condition"} className="bg-white">
+          <Link href={"/"} className="bg-white">
             <button className="bg-white">
               <ArrowLeftCircle className="h-10 w-10 bg-white text-blue-500 rounded-full" />
             </button>
