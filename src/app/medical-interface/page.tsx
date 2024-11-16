@@ -3,7 +3,7 @@
 import { UserRound, Plus, User, ArrowLeftCircle } from "lucide-react"
 import Link from "next/link"
 import VoiceRecognition from "../components/Recognition"
-import CameraFeed from "../components/CameraFeed"
+
 
 export default function Component() {
   const diagnoses = [
@@ -72,9 +72,6 @@ export default function Component() {
         </div>
 
         
-      </div>
-      <div className="space-x-2">
-        <CameraFeed/>
       </div>
     </div>
   )

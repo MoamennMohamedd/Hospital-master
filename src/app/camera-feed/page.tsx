@@ -115,7 +115,7 @@ export default function CameraFeed() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen pt-60 p-4">
       <div className="w-full max-w-4xl space-y-4">
-        <h1 className="text-2xl font-bold text-center text-gray-800">Camera Feed</h1>
+        <h1 className="text-4xl font-bold text-center mb-24 text-gray-800">Camera Feed</h1>
         
         <div className="relative aspect-video bg-black rounded-lg overflow-hidden w-full h-[60vh]">
           {stream ? (
