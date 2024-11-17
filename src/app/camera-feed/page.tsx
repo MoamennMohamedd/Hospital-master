@@ -2,9 +2,10 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import { Camera, Video, X, RefreshCw, Info } from 'lucide-react'
+import { Camera, Video, X, RefreshCw, Info, ArrowLeftCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import Link from 'next/link'
 
 export default function CameraFeed() {
   const [stream, setStream] = useState<MediaStream | null>(null)
@@ -113,81 +114,95 @@ export default function CameraFeed() {
   }, [stopCamera, startCamera, updateDiagnosticInfo])
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen pt-60 p-4">
-      <div className="w-full max-w-4xl space-y-4">
-        <h1 className="text-4xl font-bold text-center mb-24 text-gray-800">Camera Feed</h1>
-        
-        <div className="relative aspect-video bg-black rounded-lg overflow-hidden w-full h-[60vh]">
-          {stream ? (
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              className="w-full h-full object-cover"
-              aria-label="Live camera feed"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-white">
-              {error ? error : "Camera is off"}
+    
+    <><main>
+      <header className="mb-12 flex justify-between items-center">
+      <div className="text-5xl font-semibold">
+            Smart <span className="text-blue-500">Ambulance</span>
+          </div>
+        <div className="w-8 h-8 bg-white flex items-center justify-center mt-3 mr-3">
+          <Link href={"/condition"} className="bg-white">
+            <button className="bg-white">
+              <ArrowLeftCircle className="h-10 w-10 bg-white text-blue-500 rounded-full" />
+            </button>
+          </Link>
+        </div>
+      </header>
+    </main><div className="flex flex-col items-center justify-center min-h-screen p-4">
+
+        <div className="w-full max-w-4xl space-y-4">
+          <h1 className="text-4xl font-bold text-center text-gray-800">Camera Feed</h1>
+
+          <div className="relative aspect-video bg-black rounded-lg overflow-hidden w-full h-[60vh]">
+            {stream ? (
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+                aria-label="Live camera feed" />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-white">
+                {error ? error : "Camera is off"}
+              </div>
+            )}
+          </div>
+
+          {isBlackScreen && (
+            <Alert variant="destructive">
+              <AlertTitle>Black Screen Detected</AlertTitle>
+              <AlertDescription>
+                We've detected a black screen. This could be due to:
+                <ul className="list-disc list-inside mt-2">
+                  <li>Camera is covered or obstructed</li>
+                  <li>Lighting conditions are too dark</li>
+                  <li>Camera driver issues</li>
+                </ul>
+                Try restarting the camera or check your device settings.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <div className="flex justify-center space-x-4">
+            {!stream ? (
+              <Button onClick={startCamera}>
+                <Camera className="mr-2 h-4 w-4" />
+                Start Camera
+              </Button>
+            ) : (
+              <>
+                <Button onClick={stopCamera} variant="destructive">
+                  <X className="mr-2 h-4 w-4" />
+                  Stop Camera
+                </Button>
+                <Button onClick={takeSnapshot}>
+                  <Camera className="mr-2 h-4 w-4" />
+                  Take Snapshot
+                </Button>
+                <Button onClick={restartCamera}>
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Restart Camera
+                </Button>
+              </>
+            )}
+          </div>
+
+          {snapshot && (
+            <div className="mt-4 relative">
+              <img src={snapshot} alt="Snapshot" className="w-full rounded-lg" />
+              <Button
+                onClick={closeSnapshot}
+                variant="secondary"
+                size="sm"
+                className="absolute top-2 right-2"
+                aria-label="Close snapshot"
+              >
+                <X className="h-4 w-4" />
+              </Button>
             </div>
           )}
+
         </div>
-        
-        {isBlackScreen && (
-          <Alert variant="destructive">
-            <AlertTitle>Black Screen Detected</AlertTitle>
-            <AlertDescription>
-              We've detected a black screen. This could be due to:
-              <ul className="list-disc list-inside mt-2">
-                <li>Camera is covered or obstructed</li>
-                <li>Lighting conditions are too dark</li>
-                <li>Camera driver issues</li>
-              </ul>
-              Try restarting the camera or check your device settings.
-            </AlertDescription>
-          </Alert>
-        )}
-
-        <div className="flex justify-center space-x-4">
-          {!stream ? (
-            <Button onClick={startCamera}>
-              <Camera className="mr-2 h-4 w-4" />
-              Start Camera
-            </Button>
-          ) : (
-            <>
-              <Button onClick={stopCamera} variant="destructive">
-                <X className="mr-2 h-4 w-4" />
-                Stop Camera
-              </Button>
-              <Button onClick={takeSnapshot}>
-                <Camera className="mr-2 h-4 w-4" />
-                Take Snapshot
-              </Button>
-              <Button onClick={restartCamera}>
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Restart Camera
-              </Button>
-            </>
-          )}
-        </div>
-
-        {snapshot && (
-          <div className="mt-4 relative">
-            <img src={snapshot} alt="Snapshot" className="w-full rounded-lg" />
-            <Button
-              onClick={closeSnapshot}
-              variant="secondary"
-              size="sm"
-              className="absolute top-2 right-2"
-              aria-label="Close snapshot"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
-
-      </div>
-    </div>
+      </div></>
   )
 }
